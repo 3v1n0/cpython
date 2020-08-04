@@ -461,8 +461,12 @@ def register_X_browsers():
     if shutil.which("xdg-open"):
         register("xdg-open", None, BackgroundBrowser("xdg-open"))
 
+    xdg_desktop = os.getenv("XDG_CURRENT_DESKTOP", "").split(":")
+
     # The default GNOME3 browser
-    if "GNOME_DESKTOP_SESSION_ID" in os.environ and shutil.which("gvfs-open"):
+    if (("GNOME" in xdg_desktop or
+         "GNOME_DESKTOP_SESSION_ID" in os.environ) and
+            shutil.which("gvfs-open")):
         register("gvfs-open", None, BackgroundBrowser("gvfs-open"))
 
     # The default GNOME browser
@@ -470,7 +474,9 @@ def register_X_browsers():
         register("gnome-open", None, BackgroundBrowser("gnome-open"))
 
     # The default KDE browser
-    if "KDE_FULL_SESSION" in os.environ and shutil.which("kfmclient"):
+    if (("KDE" in xdg_desktop or
+         "KDE_FULL_SESSION" in os.environ) and
+            shutil.which("kfmclient")):
         register("kfmclient", Konqueror, Konqueror("kfmclient"))
 
     if shutil.which("x-www-browser"):
